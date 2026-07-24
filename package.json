@@ -1,0 +1,16 @@
+{
+  "name": "shield-ai-monorepo",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install --prefix frontend && npm install --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  },
+  "engines": {
+  "node": ">=18"
+}
+}
