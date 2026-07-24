@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "install-all": "npm install --prefix frontend && npm install --prefix backend",
-    "build": "npm run build --prefix frontend",
+    "build": "cd frontend && npm install && npm run build",
+    "vercel-build": "cd frontend && npm install && npm run build",
     "start": "node backend/server.js"
   },
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "vite": "^8.0.10"
   },
   "engines": {
-  "node": ">=18"
-}
+    "node": ">=18"
+  }
 }
