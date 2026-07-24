@@ -8,6 +8,8 @@ import DataStatusBadge from "../components/DataStatusBadge";
 import { api } from "../utils/api";
 import { Shield, Navigation, Clock, CheckCircle, AlertTriangle } from "lucide-react";
 
+import { generateFallbackItinerary } from "../utils/fallbackGenerator";
+
 export default function Planner() {
   const { setItinerary } = useApp();
   const [form, setForm] = useState({
@@ -55,7 +57,6 @@ export default function Planner() {
         setLocalItinerary(data);
         setItinerary(data);
 
-        // Fetch Multi-factor Safe Routes for destination
         try {
           const firstAct = data.itinerary[0]?.activities[0];
           const lastAct = data.itinerary[0]?.activities[1] || firstAct;
@@ -83,8 +84,13 @@ export default function Planner() {
         throw new Error("Invalid response format");
       }
     } catch (err) {
-      console.error(err);
-      setError(err.response?.data?.message || "Tactical telemetry failed. Please provide a more specific destination.");
+      console.warn("Backend trip query failed, engaging client-side AI fallback:", err);
+      const fallbackData = generateFallbackItinerary(form.destination, form.days, form.budget);
+      setLocalItinerary(fallbackData);
+      setItinerary(fallbackData);
+      setTimeout(() => {
+        window.scrollTo({ top: 380, behavior: 'smooth' });
+      }, 100);
     } finally {
       setLoading(false);
     }
