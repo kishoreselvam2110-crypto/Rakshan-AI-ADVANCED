@@ -19,6 +19,7 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
 import { logSafetyEvent } from "./logSafetyEvent.js";
+import { supabase } from "./supabase.js";
 import connectivityRouter from "./routes/connectivity.js";
 import lostItemRouter from "./routes/lostItem.js";
 import safetyEventsRouter from "./routes/safetyEvents.js";

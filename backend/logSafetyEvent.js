@@ -1,7 +1,5 @@
-// New MySQL way
-import pool from './db/db.js'; // Adjust the path to your db.js file
-
-await pool.query('INSERT INTO safety_events (event) VALUES (?)', [event]);
+import pool from './db/db.js';
+import { supabase } from './supabase.js';
 
 /**
  * Log a safety‑related event.
@@ -16,20 +14,45 @@ export async function logSafetyEvent({
   longitude,
   metadata = {}
 }) {
-  if (!supabase) return;
-  try {
-    await supabase.from("safety_events").insert([
-      {
-        user_id: userId || "Anonymous",
-        event_type: eventType,
-        event_source: eventSource,
-        risk_score: riskScore,
-        latitude,
-        longitude,
-        metadata
+  // 1. Log to Supabase if available
+  if (supabase) {
+    try {
+      const { error } = await supabase.from("safety_events").insert([
+        {
+          user_id: userId || "Anonymous",
+          event_type: eventType,
+          event_source: eventSource,
+          risk_score: riskScore,
+          latitude,
+          longitude,
+          metadata
+        }
+      ]);
+      if (error) {
+        console.error("Supabase safety event logging error:", error.message);
       }
+    } catch (e) {
+      console.error("Error logging safety event to Supabase:", e.message);
+    }
+  }
+
+  // 2. Log to MySQL as fallback or secondary store
+  try {
+    const query = `
+      INSERT INTO safety_events (user_id, event_type, event_source, risk_score, latitude, longitude, metadata)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    await pool.query(query, [
+      userId || "Anonymous",
+      eventType,
+      eventSource,
+      riskScore,
+      latitude || null,
+      longitude || null,
+      JSON.stringify(metadata)
     ]);
   } catch (e) {
-    console.error("Error logging safety event:", e.message);
+    // MySQL logging failed (could be offline or table doesn't exist)
+    console.warn("⚠️ MySQL safety event logging skipped:", e.message);
   }
 }
