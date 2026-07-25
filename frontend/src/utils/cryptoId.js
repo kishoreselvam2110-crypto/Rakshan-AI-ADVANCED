@@ -29,6 +29,31 @@ export const signProfile = async (profileData) => {
   };
 };
 
+/**
+ * Panic / Duress Signature Generator
+ * Generates an emergency duress-flagged cryptographic token when forced to sign under threat.
+ * Embeds a covert 'DURESS_ALERT' claim while maintaining a valid Ed25519 verification format.
+ */
+export const signDuressPanicToken = async (locationCoords = { lat: 0, lon: 0 }) => {
+  const keys = await getKeys();
+  const duressPayload = {
+    timestamp: new Date().toISOString(),
+    duress: true,
+    covertSignal: "NATIONAL_SECURITY_EMERGENCY_DURESS",
+    location: locationCoords
+  };
+
+  const message = new TextEncoder().encode(JSON.stringify(duressPayload));
+  const signature = ed.sign(keys.secretKey, message);
+
+  return {
+    tokenType: "PANIC_DURESS_SIGNATURE",
+    payload: duressPayload,
+    signature: btoa(String.fromCharCode.apply(null, signature)),
+    publicKey: btoa(String.fromCharCode.apply(null, keys.publicKey))
+  };
+};
+
 export const verifyProfile = (signedData) => {
   const { signature, publicKey, ...data } = signedData;
   const message = new TextEncoder().encode(JSON.stringify(data));

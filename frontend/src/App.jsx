@@ -24,9 +24,7 @@ const ScamCheck = lazy(() => import("./pages/ScamCheck"));
 const ConnectivityMonitor = lazy(() => import("./pages/ConnectivityMonitor"));
 const LostItemAssistant = lazy(() => import("./pages/LostItemAssistant.jsx"));
 const OfflineKit = lazy(() => import("./pages/OfflineKit.jsx"));
-const SafetyCenter = lazy(() => import("./pages/SafetyCenter"));
-
-import "./App.css";
+const RPPGVitalsMonitor = lazy(() => import("./components/RPPGVitalsMonitor"));
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -39,6 +37,7 @@ function AnimatedRoutes() {
           <Route path="/home" element={<PageWrapper><Landing /></PageWrapper>} />
           <Route path="/planner" element={<PageWrapper><Planner /></PageWrapper>} />
           <Route path="/digital-id" element={<PageWrapper><DigitalID /></PageWrapper>} />
+          <Route path="/vitals" element={<PageWrapper><RPPGVitalsMonitor /></PageWrapper>} />
           <Route path="/verify" element={<PageWrapper><VerifyID /></PageWrapper>} />
           <Route path="/verify/:id" element={<PageWrapper><VerifyID /></PageWrapper>} />
           <Route path="/admin" element={<PageWrapper><AdminDashboard /></PageWrapper>} />
@@ -148,6 +147,7 @@ function Navbar() {
   const navLinks = [
     { to: "/home", label: "Portal", icon: <MapIcon size={18} /> },
     { to: "/digital-id", label: "Digital ID", icon: <User size={18} /> },
+    { to: "/vitals", label: "Optical Vitals", icon: <Shield size={18} />, color: "text-rose-400" },
     { to: "/wilderness", label: "Wilderness", icon: <ShieldAlert size={18} />, color: "text-emerald-400" },
     { to: "/safety-center", label: "Safety Center", icon: <Shield size={18} />, color: "text-rose-400" },
     { to: "/connectivity", label: "Connectivity", icon: <Shield size={18} /> },

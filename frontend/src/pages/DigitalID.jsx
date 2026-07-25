@@ -164,15 +164,30 @@ export default function DigitalID() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-12"
+          className="mt-12 flex flex-wrap justify-center gap-6"
         >
           <button
             onClick={() => window.print()}
             aria-label="Download or Print Secure ID"
-            className="group px-12 py-4 bg-emerald-600 hover:bg-emerald-500 rounded-2xl font-black transition-all border border-emerald-400/20 text-sm uppercase tracking-widest text-white shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:shadow-[0_0_40px_rgba(16,185,129,0.4)] focus:outline-none focus:ring-4 focus:ring-emerald-500/20 flex items-center gap-3"
+            className="group px-10 py-4 bg-emerald-600 hover:bg-emerald-500 rounded-2xl font-black transition-all border border-emerald-400/20 text-sm uppercase tracking-widest text-white shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:shadow-[0_0_40px_rgba(16,185,129,0.4)] focus:outline-none focus:ring-4 focus:ring-emerald-500/20 flex items-center gap-3"
           >
             <Zap className="w-4 h-4 text-emerald-300" />
             Download Secure ID
+          </button>
+
+          <button
+            onClick={async () => {
+              const { signDuressPanicToken } = await import("../utils/cryptoId");
+              const duressToken = await signDuressPanicToken();
+              setResult(duressToken);
+              const { toast } = await import("sonner");
+              toast.error("🚨 DURESS SIGNATURE GENERATED: Covert panic token embedded in QR code proof.", { duration: 6000 });
+            }}
+            aria-label="Generate Panic Duress Signature"
+            className="group px-8 py-4 bg-rose-950/80 hover:bg-rose-900 border border-rose-500/40 rounded-2xl font-black transition-all text-xs uppercase tracking-widest text-rose-300 shadow-xl focus:outline-none focus:ring-4 focus:ring-rose-500/20 flex items-center gap-2"
+          >
+            <Zap className="w-4 h-4 text-rose-400 animate-ping" />
+            Generate Panic/Duress Token
           </button>
         </motion.div>
       )}
