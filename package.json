@@ -1,14 +1,12 @@
 {
-  "name": "shield-ai-monorepo",
+  "name": "rakshan-ai-monorepo",
   "version": "2.0.0",
   "private": true,
   "scripts": {
     "install-all": "npm install --prefix backend && npm install --prefix frontend",
-    "build": "npm install --prefix backend && npm install --prefix frontend && cd frontend && npm run build",
-    "start": "node backend/server.js"
-  },
-  "dependencies": {
-    "dotenv": "^17.4.2"
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js"
   },
   "engines": {
     "node": ">=18"

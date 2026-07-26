@@ -24,7 +24,9 @@ const ScamCheck = lazy(() => import("./pages/ScamCheck"));
 const ConnectivityMonitor = lazy(() => import("./pages/ConnectivityMonitor"));
 const LostItemAssistant = lazy(() => import("./pages/LostItemAssistant.jsx"));
 const OfflineKit = lazy(() => import("./pages/OfflineKit.jsx"));
+const SafetyCenter = lazy(() => import("./pages/SafetyCenter.jsx"));
 const RPPGVitalsMonitor = lazy(() => import("./components/RPPGVitalsMonitor"));
+
 
 function AnimatedRoutes() {
   const location = useLocation();

@@ -683,17 +683,19 @@ app.use((req, res) => {
   if (fs.existsSync(indexPage)) {
     res.sendFile(indexPage);
   } else {
+    // Frontend not yet built — redirect to login after serving a minimal redirect page
     res.status(200).send(`
       <!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Rakshan AI Backend | Active</title>
+        <title>Rakshan AI — Loading</title>
         <style>
+          * { box-sizing: border-box; margin: 0; padding: 0; }
           body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #0d0f12;
+            background: linear-gradient(135deg, #0d0f12 0%, #0f172a 50%, #0d0f12 100%);
             color: #e2e8f0;
             display: flex;
             align-items: center;
@@ -703,86 +705,42 @@ app.use((req, res) => {
             text-align: center;
           }
           .container {
-            max-width: 600px;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
+            max-width: 480px;
+            padding: 2.5rem 2rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(99,179,237,0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,179,237,0.05);
+            backdrop-filter: blur(16px);
           }
-          h1 {
-            color: #38bdf8;
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
+          .logo { font-size: 3rem; margin-bottom: 1rem; }
+          h1 { color: #63b3ed; font-size: 1.8rem; margin-bottom: 0.5rem; }
+          p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; }
+          .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid rgba(99,179,237,0.2);
+            border-top-color: #63b3ed;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 1.5rem auto 0.5rem;
           }
-          p {
-            color: #94a3b8;
-            font-size: 1.1rem;
-            line-height: 1.6;
-          }
-          .status {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 9999px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin: 1.5rem 0;
-          }
-          .routes {
-            text-align: left;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-          }
-          .routes h3 {
-            margin-top: 0;
-            color: #38bdf8;
-          }
-          .routes ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-          }
-          .routes li {
-            padding: 0.25rem 0;
-            font-family: monospace;
-            color: #cbd5e1;
-          }
-          .routes span {
-            color: #10b981;
-            font-weight: bold;
-            display: inline-block;
-            width: 45px;
-          }
+          @keyframes spin { to { transform: rotate(360deg); } }
         </style>
       </head>
       <body>
         <div class="container">
-          <h1>🛡️ Rakshan AI</h1>
-          <div class="status">⚡ Backend API Service: ACTIVE</div>
-          <p>The backend server is running successfully on Render. Since the frontend user interface is hosted separately on Vercel, please access the platform via the main Vercel frontend URL.</p>
-          <div class="routes">
-            <h3>🔑 Key Endpoints:</h3>
-            <ul>
-              <li><span>GET</span> /api/health - Status indicator</li>
-              <li><span>GET</span> /api/safety-score - Get current user safety score</li>
-              <li><span>GET</span> /api/safety-events - Retrieve safety log entries</li>
-              <li><span>GET</span> /api/osm/pois - Real-time emergency structures proxy</li>
-              <li><span>POST</span> /api/routing/safe-route - Multi-factor safety routing</li>
-            </ul>
-          </div>
+          <div class="logo">🛡️</div>
+          <h1>Rakshan AI</h1>
+          <p>AI-Driven Cryptographic Border Protection & Safety Platform</p>
+          <div class="spinner"></div>
+          <p style="margin-top:0.5rem; color:#38bdf8; font-size:0.85rem;">Initializing secure environment…</p>
         </div>
       </body>
       </html>
     `);
   }
 });
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
