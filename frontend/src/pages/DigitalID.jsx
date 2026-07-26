@@ -114,7 +114,7 @@ export default function DigitalID() {
                     <div className="p-4 md:p-6 bg-white rounded-[2rem] shadow-[0_0_50px_rgba(255,255,255,0.2)] max-w-full">
                       {result && (
                         <QRCodeCanvas 
-                          value={`https://shield-backend-w9qv.onrender.com/verify?data=${encodeURIComponent(JSON.stringify(result))}`} 
+                          value={`https://rakshan-ai-advanced.onrender.com/verify?data=${encodeURIComponent(JSON.stringify(result))}`} 
                           size={220}
                           style={{ width: '100%', height: 'auto', maxWidth: '220px' }}
                           level="M"
