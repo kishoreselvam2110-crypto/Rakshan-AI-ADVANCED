@@ -10,14 +10,13 @@ export const AppProvider = ({ children }) => {
   const [tourists, setTourists] = useState({});
   const [itinerary, setItinerary] = useState(null);
 
-  // Memoized Socket Instance - dynamically adapts to VITE_BACKEND_URL or falls back gracefully
+  // Memoized Socket Instance - dynamically connects to VITE_BACKEND_URL or window.location.origin on unified Render deploy
   const socket = useMemo(() => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    if (!backendUrl) return null; // Avoid trying to connect to Vercel static server
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || window.location.origin;
     return io(backendUrl, {
       transports: ["websocket", "polling"],
-      reconnectionAttempts: 3,
-      timeout: 5000
+      reconnectionAttempts: 5,
+      timeout: 10000
     });
   }, []);
 
